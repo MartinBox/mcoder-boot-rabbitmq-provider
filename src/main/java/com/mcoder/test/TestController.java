@@ -6,11 +6,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @RestController
 @RequestMapping(value = "test/")
 public class TestController {
     @Autowired
     private RabbitTemplate rabbitTemplate;
+
+    private ExecutorService executorService = Executors.newFixedThreadPool(200);
 
     @GetMapping("/get")
     public Object test() {
@@ -19,8 +24,8 @@ public class TestController {
 
     @GetMapping("/cache")
     public void cache() {
-        for (int i = 0; i < 1000; i++) {
-            rabbitTemplate.convertAndSend(Application.queueName, "muscle coder mq test  ".concat(i + ""));
+        for (int i = 0; i < 1000000; i++) {
+            executorService.execute(() -> rabbitTemplate.convertAndSend(Application.queueName, "muscle coder mq test  "));
         }
     }
 }
