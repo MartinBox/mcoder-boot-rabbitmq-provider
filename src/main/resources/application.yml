@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: rabbitmq-test
+  rabbitmq:
+    host: 192.168.1.8
+    port: 5672
+    username: muscle
+    password: coder
+server:
+  port: 8081
